@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$e7j6ww*r--ftaeun=nc*weehoe#gh_jyb7d9+hd!rtbv8n#u0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'undawned-ayla-minable.ngrok-free.dev',
+    'fuliza-project.onrender.com',
     'localhost',
     '127.0.0.1'
 ]

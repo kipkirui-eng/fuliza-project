@@ -127,7 +127,7 @@ def stk_push(phone, amount):
         "PartyA": phone,
         "PartyB": shortcode,
         "PhoneNumber": phone,
-        "CallBackURL": "https://undawned-ayla-minable.ngrok-free.dev/callback/",
+        "CallBackURL": "fuliza-project.onrender.com/callback/",
         "AccountReference": "Fuliza",
         "TransactionDesc": "Payment"
     }
