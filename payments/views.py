@@ -110,7 +110,7 @@ def result(request):
 def stk_push(phone, amount):
     access_token = get_access_token()
 
-    url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+    url = "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 
     shortcode = "174379" 
     passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
@@ -127,7 +127,7 @@ def stk_push(phone, amount):
         "PartyA": phone,
         "PartyB": shortcode,
         "PhoneNumber": phone,
-        "CallBackURL": "fuliza-project.onrender.com/callback/",
+        "CallBackURL": "https://fuliza-project.onrender.com/callback/",
         "AccountReference": "Fuliza",
         "TransactionDesc": "Payment"
     }
@@ -152,7 +152,7 @@ def get_access_token():
     consumer_key = "uAXvc84UhbEwlI89sMA6vX8yPFGzdLs6B3Gyn9WdsZm5wfh4"
     consumer_secret = "t5zCG1VT3EMWF87hjA0PiP1gNoZupF75hyAagHe1vBIk9JOFHhzUBkZAUJWT0Bpk"
 
-    url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
 
     response = requests.get(url, auth=HTTPBasicAuth(consumer_key, consumer_secret))
 
@@ -164,23 +164,18 @@ def get_access_token():
          return None
 
 
-    
-def callback(request):
-    data = json.loads(request.body)
-
-    result = data["Body"]["stkCallback"]
-
-    if result["ResultCode"] == 0:
-        
-        print("Payment Successful")
-    else:
-        print("Payment Failed")
-
-    return HttpResponse("OK") 
-
 @csrf_exempt
-def mpesa_callback(request):
+def callback(request):
     if request.method == "POST":
         data = json.loads(request.body)
         print("CALLBACK DATA:", data)
+
+        result = data.get("Body", {}).get("stkCallback", {})
+
+        if result.get("ResultCode") == 0:
+        
+            print("Payment Successful")
+        else:
+            print("Payment Failed")
+
         return JsonResponse({"ResultCode": 0, "ResultDesc": "Success"})
