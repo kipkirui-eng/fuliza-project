@@ -111,6 +111,7 @@ def stk_push(phone, amount):
     access_token = get_access_token()
 
     url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+
     shortcode = "174379" 
     passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
 
@@ -162,19 +163,25 @@ def get_access_token():
          print("FAILED TO GET TOKEN")
          return None
 
-
 @csrf_exempt
 def callback(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        print("CALLBACK DATA:", data)
+    try:
+        if request.method == "POST":
+            data = json.loads(request.body)
+            print("CALLBACK DATA:", data)
 
-        result = data.get("Body", {}).get("stkCallback", {})
+            result = data.get("Body", {}).get("stkCallback", {})
 
-        if result.get("ResultCode") == 0:
-        
-            print("Payment Successful")
-        else:
-            print("Payment Failed")
+            if result.get("ResultCode") == 0:
+                print("Payment Successful")
+            else:
+                print("Payment Failed")
 
-        return JsonResponse({"ResultCode": 0, "ResultDesc": "Success"})
+        return HttpResponse("Callback URL is active", status=200)
+
+    except Exception as e:
+        print("ERROR:", str(e))
+        return JsonResponse({
+            "ResultCode": 1,
+            "ResultDesc": "Error"
+        })
